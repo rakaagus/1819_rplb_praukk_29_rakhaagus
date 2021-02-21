@@ -24,3 +24,4 @@ Route::get('/home', 'PageController@home')->name('home');
 
 Route::get('/order', 'PageController@order')->name('order');
 Route::get('/transaksi', 'PageController@transaksi')->name('transaksi');
+Route::get('/menu', 'PageController@menu')->name('menu');

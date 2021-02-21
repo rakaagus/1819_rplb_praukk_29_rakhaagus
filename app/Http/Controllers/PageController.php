@@ -9,26 +9,30 @@ class PageController extends Controller
     //
     public function index()
     {
-        return view('admin.index');
+        return view('data-admin.index');
     }
     public function login()
     {
-        return view('auth.login');
+        return view('data-auth.login');
     }
     public function register()
     {
-        return view('auth.register');
+        return view('data-auth.register');
     }
     public function order()
     {
-        return view('admin.order.index');
+        return view('data-admin.order.index');
     }
     public function transaksi()
     {
-        return view('admin.transaksi.index');
+        return view('data-admin.transaksi.index');
     }
     public function home()
     {
         return view('pelanggan.landing');
+    }
+    public function menu()
+    {
+        return view('data-admin.menu.index');
     }
 }
