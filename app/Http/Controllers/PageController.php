@@ -9,7 +9,7 @@ class PageController extends Controller
     //
     public function index()
     {
-        return view('dashboard.index');
+        return view('admin.index');
     }
     public function login()
     {
@@ -19,8 +19,16 @@ class PageController extends Controller
     {
         return view('auth.register');
     }
-    public function list()
+    public function order()
     {
-        return view('dashboard.tables');
+        return view('admin.order.index');
+    }
+    public function transaksi()
+    {
+        return view('admin.transaksi.index');
+    }
+    public function home()
+    {
+        return view('pelanggan.landing');
     }
 }

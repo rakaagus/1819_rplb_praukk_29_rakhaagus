@@ -86,7 +86,7 @@
 
                 <div class="links">
                     <a href="{{route('dashboard')}}">Dashboard</a>
-                    <a href="{{route('list')}}">List</a>
+                    <a href="{{route('home')}}">Homepage</a>
                     <a href="{{route('login')}}">login</a>
                     <a href="{{route('register')}}">register</a>
                 </div>

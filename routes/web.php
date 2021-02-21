@@ -20,4 +20,7 @@ Route::get('/', function () {
 Route::get('/dashboard', 'PageController@index')->name('dashboard');
 Route::get('/login', 'PageController@login')->name('login');
 Route::get('/register', 'PageController@register')->name('register');
-Route::get('/list', 'PageController@list')->name('list');
+Route::get('/home', 'PageController@home')->name('home');
+
+Route::get('/order', 'PageController@order')->name('order');
+Route::get('/transaksi', 'PageController@transaksi')->name('transaksi');

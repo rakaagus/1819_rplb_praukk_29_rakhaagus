@@ -1,18 +1,83 @@
-.nav-link:hover {
-    background-color: grey;
+body {
+    background: #f4f6f9;
+    min-height: 100%;
+    overflow-x: hidden;
 }
-.display-4 {
-    font-weight: bold;
+
+.vertical-nav {
+    background-color: #313535;
+    min-width: 16rem;
+    width: 16rem;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: all 0.3s;
 }
-.card-body-icon {
-    position: absolute;
+.page-content {
+    width: calc(100% - 16rem);
+    margin-left: 16rem;
+    transition: all 0.3s;
+}
+
+#sidebar.active {
+    margin-left: -16rem;
+}
+
+#content.active {
+    width: 100%;
+    margin: 0;
+}
+
+#sidebar ul li .nav-link:hover {
+    background: #4B5051;
+    border-radius: 5px;
+}
+
+.box {
+    height: 135px;
+}
+.box-footer {
+    background: rgba(0, 0, 0, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    z-index: 10;
+    border: none;
+}
+.box-footer:hover {
+    background: rgba(0, 0, 0, 0.15);
+    color: #ffffff;
+}
+.icon {
+    color: rgba(0, 0, 0, 0.15);
     z-index: 0;
-    top: 25px;
-    right: 4px;
-    opacity: 0.4;
-    font-size: 90px;
 }
-.navbar-light{
-    background-color: #4B5051;
-    box-shadow:  0 0 10px 10px rgba(0, 0, 0, 0.10);
+
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -16rem;
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+    #content {
+        width: 100%;
+        margin: 0;
+    }
+    #content.active {
+        margin-left: 16rem;
+        width: calc(100% - 16rem);
+    }
+}
+
+@media (min-width: 376px) {
+    .navbar-expand-sm .navbar-nav {
+        flex-direction: row;
+    }
+    .navbar-expand-sm .navbar-nav .dropdown-menu {
+        position: absolute;
+    }
+    .navbar-expand-sm .navbar-nav .nav-link {
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
+    }
 }

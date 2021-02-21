@@ -1,4 +1,3 @@
-@include('../layouts.home')
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg">
     <div class="container">
@@ -57,4 +56,3 @@
 
   </div>
   <!-- end container -->
-@include('../layouts.js')
