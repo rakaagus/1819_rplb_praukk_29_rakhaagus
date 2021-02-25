@@ -29,7 +29,7 @@ class PageController extends Controller
     }
     public function home()
     {
-        return view('pelanggan.landing');
+        return view('data-pelanggan.index');
     }
     public function menu()
     {
