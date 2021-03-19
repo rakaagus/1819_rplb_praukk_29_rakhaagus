@@ -6,39 +6,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
 
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
 
-    <link rel="stylesheet" type="text/css" href="assets/css/login.css">
+    <link rel="stylesheet" type="text/css" href="{{ url('assets/css/login.css') }}">
 </head>
 <body>
-    
+
 <!-- Content -->
 <div class="container">
     <div class="row content">
         <div class="col-md-6 mb-3">
-            <img src="assets/img/login.png" alt="image" class="img-fluid">
+            <img src="assets/img/login/login.png" alt="image" class="img-fluid">
         </div>
         <div class="col-md-6">
             <h3 class="singin-text mb-3">Sign In</h3>
 
             <!-- form -->
-            <form action="#">
+            <form method="POST" action="{{ route('login') }}">
+                @csrf
                 <!-- Form grup -->
                 <div class="form-group">
                     <label for="email">Email</label>
-                    <input type="email" name="email" id="" class="form-control">
+                    <input type="email" name="email" id="" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}">
+                    @error('email')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
 
                 <!-- Form grup -->
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="Password" name="password" id="" class="form-control">
-                </div>
-
-                <!-- remember Me -->
-                <div class="form-group form-check">
-                    <input type="checkbox" name="checkbox" id="checkbox" class="form-check-input">
-                    <label for="checkbox" class="form-check-label">Remember Me</label>
+                    <input type="password" name="password" id="" class="form-control @error('password') is-invalid @enderror" value="{{ old('email') }}">
+                    @error('password')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
                 </div>
                 
                 <!-- buttons -->
@@ -47,16 +52,10 @@
                 <!-- Form grup -->
                
                 <div class="form-group">
-                    <label for="password"><a href="{{route('register')}}" class="alink">Dont Any Account?</a></label>
+                    <label for=""><a href="singup.html" class="alink">Any Account?</a></label>
                 </div>
 
             </form>
         </div>
     </div>
 </div>
-
-    <!-- Boostrap -->
-    <script type="text/javascript" src="assets/bootstrap/js/bootstrap.min.js"></script>
-
-</body>
-</html>

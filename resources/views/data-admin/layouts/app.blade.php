@@ -7,16 +7,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="assets/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="{{ url('/assets/fontawesome/css/all.min.css') }}">
 
     <!-- Datatables -->
-    <link rel="stylesheet" href="/assets/datatables/datatables.min.css">
+    <link rel="stylesheet" href="{{ url('/assets/datatables/DataTables-1.10.24/css/dataTables.bootstrap4.min.css') }}">
 
     <!-- My css -->
-    <link rel="stylesheet" href="/assets/css/admin.css">
+    <link rel="stylesheet" href="{{ url('/assets/css/admin.css') }}">
 
     <title>@yield('title')</title>
 </head>
@@ -38,12 +38,7 @@
         @yield('content')
         <!-- Akhir Konten -->
 
-        <!-- Footer -->
-        {{-- <div class="bg-white p-3 m-0">
-            <span class="font-weight-bold text-secondary">Copyright &copy; 2021</span>
-            <span class="text-secondary">- Electric Payment</span>
-        </div> --}}
-        <!-- Akhir Footer -->
+
 
     </div>
     <!-- Akhir Body-->
@@ -53,16 +48,20 @@
 
     <!-- JQUERY -->
     {{-- <script src="/assets/jquery/jquery-3.5.1.js"></script> --}}
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
     <!-- End Jquery
 
     <!-- Bootstrap & Popper -->
 
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script> -->
-    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js" integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF" crossorigin="anonymous"></script> -->
-    <!-- End Bootstrap & Popper
-
+    {{-- <script src="{{ url('/assets/bootstrap/js/bootstrap.min.js') }}"></script> --}}
+    {{-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>  --}}
+    
+    <!-- Datatables -->
+    <script src="{{ url('/assets/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ url('/assets/datatables/DataTables-1.10.24/js/dataTables.bootstrap4.min.js') }}" defer></script>
+    <script src="{{ url('/assets/datatables/DataTables-1.10.24/js/jquery.dataTables.min.js') }}"></script>
+    {{-- <script src="{{ url('/assets/js/demo/datatables-demo.js') }}"></script> --}}
+    <!-- End Datatables -->
     <!-- Toggle Sidebar -->
     <script>
         $(function() {
@@ -72,17 +71,14 @@
         });
     </script>
     <!-- End Toggle Sidebar -->
-
-    <!-- Datatables -->
-    <script src="/assets/datatables/datatables.min.js"></script>
     <script>
+        // Call the dataTables jQuery plugin
         $(document).ready(function() {
-            $('#datatables').DataTable({
-                "scrollX": true
-            });
+            $('#datatables').DataTable();
         });
+
     </script>
-    <!-- End Datatables -->
+
 
 </body>
 

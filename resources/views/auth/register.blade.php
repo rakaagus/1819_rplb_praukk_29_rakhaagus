@@ -1,72 +1,77 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sing up</title>
+@extends('auth.layouts.app')
 
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">    
-
-    <link rel="stylesheet" type="text/css" href="assets/css/login.css">
-</head>
-<body>
-    
-<!-- Content -->
+@section('content')
 <div class="container">
-    <div class="row content">
-        <div class="col-md-6 mb-3">
-            <img src="assets/img/signup.png" alt="image" class="img-fluid">
-        </div>
-        <div class="col-md-6">
-            <h3 class="singin-text mb-3">Sign Up</h3>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">{{ __('Register') }}</div>
 
-            <!-- form -->
-            <form action="#">
-                <!-- Form grup -->
-                <div class="form-group">
-                    <label for="email">Nama</label>
-                    <input type="text" name="nama" id="" class="form-control">
+                <div class="card-body">
+                    <form method="POST" action="{{ route('register') }}">
+                        @csrf
+
+                        <div class="form-group row">
+                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+
+                                @error('name')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+
+                            <div class="col-md-6">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                            </div>
+                        </div>
+
+                        <div class="form-group row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary">
+                                    {{ __('Register') }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-
-                <!-- Form grup -->
-                <div class="form-group">
-                    <label for="email">Username</label>
-                    <input type="text" name="nama" id="" class="form-control">
-                </div>
-
-                 <!-- Form grup -->
-                 <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" name="email" id="" class="form-control">
-                </div>
-
-                <!-- Form grup -->
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="Password" name="password" id="" class="form-control">
-                </div>
-
-                <!-- remember Me -->
-                <div class="form-group form-check">
-                    <input type="checkbox" name="checkbox" id="checkbox" class="form-check-input">
-                    <label for="checkbox" class="form-check-label">Remember Me</label>
-                </div>
-                
-                <!-- buttons -->
-                <button class="btn btn-class">Login</button> <br> <br>
-
-                <div class="form-group">
-                    <label for="password"><a href="{{route('login')}}" class="alink">Any Account?</a></label>
-                </div>
-
-            </form>
+            </div>
         </div>
     </div>
 </div>
-
-<!-- Boostrap -->
-<script type="text/javascript" src="assets/bootstrap/js/bootstrap.min.js"></script>
-
-</body>
-</html>
+@endsection
