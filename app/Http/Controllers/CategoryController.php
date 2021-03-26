@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Category;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\CategoryImport;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+Use Alert;
 
 class CategoryController extends Controller
 {
@@ -44,12 +46,14 @@ class CategoryController extends Controller
             'nama' => 'required|max:150'
         ]);
 
-        if($validasi = false){
-            return back()->with('errors', $validasi->messages()->all()[0])->withInput();
+        if($validasi->fails()){
+            Alert::error('Error', 'Masukan Data Dengan Benar');
+            return back();
         }
 
         $category = Category::create($request->all());
 
+        Alert::success('Berhasil', 'Tambah Data Berhasil');
         return redirect('/category');
     }
 
@@ -101,11 +105,17 @@ class CategoryController extends Controller
         //
         $category = Category::find($id);
 
-        $request->validate([
+        $validasi = $request->validate([
             'nama' => 'required|max:150'
         ]);
 
+        if($validasi->fails()){
+            Alert::error('Error', 'Masukan Data Dengan Benar');
+            return back();
+        }
+
         $category->update($request->all());
+        Alert::success('Berhasil', 'Edit Data Berhasil');
         return redirect('/category');
     }
 
@@ -120,6 +130,6 @@ class CategoryController extends Controller
         //
         $category = Category::find($id);
         $category->delete();
-        return redirect('/category');
+        return redirect('/category')->with('success', 'Data Berhasil Dihapus');
     }
 }

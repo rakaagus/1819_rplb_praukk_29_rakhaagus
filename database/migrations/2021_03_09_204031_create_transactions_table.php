@@ -18,6 +18,7 @@ class CreateTransactionsTable extends Migration
             $table->unsignedBigInteger('pesanan_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->integer('total_bayar');
+            $table->integer('jumlah_bayar')->nullable();
             $table->string('status')->default(0);
             $table->timestamps();
         });

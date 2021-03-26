@@ -12,6 +12,7 @@ class Transaction extends Model
         'pesanan_id',
         'user_id',
         'total_bayar',
+        'jumlah_bayar',
         'status'
     ];
 

@@ -1,11 +1,24 @@
 @extends('data-admin.layouts.app')
 
-@section('title','Data Category | Pizzify')
+@section('title','Data Product | Pizzify')
 
 @section('content')
 
 <div class="container-fluid mb-5" style="min-height: 82.5vh;">
-    <h3 class=" py-3"><i class="fas fa-cookie mr-2 pt-4 pb-2" style="size: 2px"></i>Product</h3>
+    <div class="row">
+        <div class="col-md-3">
+            <h3 class=" py-3"><i class="fas fa-cookie mr-2 pt-4 pb-2" style="size: 2px"></i>Product</h3>
+        </div>
+        <div class="col-md-3 ml-auto pt-4">
+            <nav aria-label="breadcrumb" style="color: white">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                  <li class="breadcrumb-item"><a href="{{ route('dashboard-product') }}">Product</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Show</li>
+                </ol>
+            </nav>
+        </div>
+      </div>
 
     <div class="row">
         <div class="col-md-6">

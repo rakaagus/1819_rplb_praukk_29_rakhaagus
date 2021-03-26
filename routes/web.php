@@ -18,6 +18,7 @@ Auth::routes();
 
 //home page halaman pelanggan
 Route::livewire('/', 'home')->name('home');
+Route::livewire('/profile', 'profile')->name('profile');
 Route::livewire('/products', 'product-index')->name('products');
 Route::livewire('/products/category/{id}', 'product-category')->name('products.category');
 Route::livewire('/products/{id}', 'product-detail')->name('products.detail');
@@ -63,3 +64,12 @@ Route::get('/user-log', 'LogController@logUser')->name('user-log');
 //route pesanan
 Route::get('/dashboard-pesanan', 'PesananController@index')->name('dashboard-pesanan');
 Route::post('/dashboard-pesanan/{id}', 'PesananController@statusOnchange')->name('statusOnchange');
+Route::get('/dashboard-transaksi', 'PesananController@transaksi')->name('dashboard-transaksi');
+Route::post('/dashboard-transaksi', 'PesananController@cekTransaksi')->name('dashboard-transaksi.check');
+Route::get('/kembalian', 'PesananController@kembalian')->name('kembalian');
+Route::post('/bayar/transaksi/{id}', 'PesananController@bayar')->name('bayar.transaksi');
+
+//route recap dan laporan
+Route::get('/recap/pesanan', 'PesananController@pesanan_lunas')->name('recap-pesanan');
+Route::post('/recap/pesanan', 'PesananController@cek_laporan')->name('cek_laporan');
+Route::post('/recap/pesanan/cetak', 'PesananController@cetakPesanan')->name('cetak-pesanan'); 

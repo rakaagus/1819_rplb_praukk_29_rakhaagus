@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Gate;
 
 class PageController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -20,7 +24,7 @@ class PageController extends Controller
         } elseif(Gate::allows('pelanggan')){
             return redirect('/');
         } else{
-            return 'gagal';
+            return abort(404);
         }
         
     }

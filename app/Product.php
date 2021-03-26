@@ -22,6 +22,12 @@ class Product extends Model
         return $this->belongsTo(Category::class);
 
     }
+
+    public function pesananlunas(){
+
+        return $this->belongsTo(PesananLunas::class);
+
+    }
     public function pesanan_details()
     {
         return $this->hasMany(PesananDetail::class, 'product_id', 'id');

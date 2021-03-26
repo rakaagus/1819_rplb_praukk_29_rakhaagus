@@ -54,15 +54,22 @@
                                         <?php $pesanan_details = \App\PesananDetail::where('pesanan_id', $pesanan->id)->get(); ?>
                                         @foreach ($pesanan_details as $pesanan_detail)
                                             <img src="{{ url('assets/img/product/'.$pesanan_detail->product->gambar) }}" alt="" class="img-fluid gambar-product" width="60">
-                                            {{ $pesanan_detail->product->nama }} | {{ $pesanan_detail->product->harga }} X {{$pesanan_detail->jumlah_pesanan}}
-                                            <br>
-                                        @endforeach
+                                            {{ $pesanan_detail->product->nama }} | {{ $pesanan_detail->product->harga }} X {{$pesanan_detail->jumlah_pesanan}} |  
+                                            @if ($pesanan_detail->status == 1)
+                                                Pesanan Sampai
+                                            @else
+                                                Pesanan Diproses
+                                            @endif
+                                                <br>
+                                            @endforeach
                                     </td>
                                     <td>
-                                        @if ($pesanan->status = 1)
-                                            Pesanan Dalam Proses
-                                        @else
-                                            Pesanan Sampai
+                                        @if ($pesanan->status == 1)
+                                            Pesanan Menunggu proses Pembayaran
+                                        @elseif($pesanan->status == 0)
+                                            Pesanan Diproses
+                                        @elseif($pesanan->status == 2)
+                                            Pesanan Beres
                                         @endif
                                     </td>
                                     <td><strong>Rp. {{ number_format($pesanan->total_harga) }}</strong></td>

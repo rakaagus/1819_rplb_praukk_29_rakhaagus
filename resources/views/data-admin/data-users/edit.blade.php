@@ -4,8 +4,21 @@
 
 @section('content')
 
-<div class="container-fluid mb-5" style="min-height: 82.5vh;">
-    <h3 class=" py-3"><i class="fas fa-cookie mr-2 pt-4 pb-2" style="size: 2px"></i>Users</h3>
+<div class="container mb-5" style="min-height: 82.5vh;">
+    <div class="row">
+        <div class="col-md-3">
+            <h3 class=" py-3"><i class="fas fa-users mr-2 pt-4 pb-2" style="size: 2px"></i>Users</h3>
+        </div>
+        <div class="col-md-3 ml-auto pt-4">
+            <nav aria-label="breadcrumb" style="color: white">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
+                  <li class="breadcrumb-item"><a href="{{ route('dashboard-user') }}">User</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Edit</li>
+                </ol>
+            </nav>
+        </div>
+      </div>
 
     <div class="card">
         <div class="card-header bg-white">

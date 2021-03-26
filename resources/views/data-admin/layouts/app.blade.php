@@ -9,6 +9,8 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
+    <link rel="shortcut icon" href="{{ url('assets/img/icon/icon.png') }}">
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ url('/assets/fontawesome/css/all.min.css') }}">
 
@@ -78,6 +80,30 @@
         });
 
     </script>
+    <script>
+        $(document).ready(function() {
+            $(document).on('change', '#bayar', function() {
+                var transaksi = $(this).val();
+                var total = $('#total').val();
+                var kembali = $('#kembalian');
+                $.ajax({
+                    type: 'get',
+                    url: "{{ route('kembalian') }}",
+                    data: {
+                        bayar: transaksi,
+                        total_bayar: total,
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        kembali.val(data);
+                    },
+                    error: function() {
+                    }
+                });
+            });
+        })
+    </script>
+        
 
 
 </body>

@@ -52,4 +52,9 @@ class User extends Authenticatable
         return $this->belongsTo(Level::class);
 
     }
+    public function pesananlunas(){
+
+        return $this->hasOne(PesananLunas::class);
+
+    }
 }

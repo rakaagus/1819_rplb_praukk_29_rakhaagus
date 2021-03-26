@@ -46,7 +46,7 @@ class Navbar extends Component
     {
         return view('livewire.navbar', [
             'categories' => Category::all(),
-            'jumlah_pesanan' => $this->jumlah
+            'jumlah_pesanan' => $this->jumlah,
         ]);
     }
 }

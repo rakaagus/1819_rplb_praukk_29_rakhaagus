@@ -4,7 +4,7 @@
         <div class="media d-flex align-items-center">
             {{-- <img src="/assets/img/logo.png" alt="" width="40" height="30"> --}}
             <div class="media-body">
-                <h5 class="m-0 text-white">Pizzify Dashboard</h5>
+                <h5 class="m-0 text-white"><img src="{{ url('assets/img/icon/icon.png') }}" alt="" width="15%"> Pizzify Dashboard</h5>
             </div>
         </div>
     </div>
@@ -39,7 +39,7 @@
         <li class="nav-item">
             <div class="px-2 pb-1">
                 <a href="{{ route('dashboard-pesanan') }}" class="nav-link text-white rounded">
-                    <i class="fas fa-concierge-bell fa-fw mr-3"></i>Order
+                    <i class="fas fa-concierge-bell fa-fw mr-3"></i>Pesanan
                 </a>
             </div>
         </li>
@@ -49,8 +49,8 @@
         {{-- kasir-link --}}
         <li class="nav-item">
             <div class="px-2 pb-1">
-                <a href="" class="nav-link text-white rounded">
-                    <i class="fas fa-money-check-alt fa-fw mr-3"></i>Kasir
+                <a href="{{ route('dashboard-transaksi') }}" class="nav-link text-white rounded">
+                    <i class="fas fa-money-check-alt fa-fw mr-3"></i>Transaksi
                 </a>
             </div>
         </li>
@@ -84,8 +84,18 @@
         <li class="nav-item">
             <div class="px-2 pb-1">
                 <label for="" class="text-white ml-2" style="font-size: 15px"><i class="fas fa-project-diagram fa-fw"></i> Rekap</label>
-                <a href="laporan-pembayaran" class="nav-link text-white rounded">
-                    <i class="fas fa-circle-notch mr-3 text-white fa-fw"></i>Hasil Penjualan
+                <a href="{{ route('recap-pesanan') }}" class="nav-link text-white rounded">
+                    <i class="fas fa-circle-notch mr-3 text-white fa-fw"></i>Pesanan
+                </a>
+            </div>
+        </li>
+        {{-- end hasil-penjualan-link --}}
+
+        {{-- hasil-penjualan-link --}}
+        <li class="nav-item">
+            <div class="px-2 pb-1">
+                <a href="" class="nav-link text-white rounded">
+                    <i class="fas fa-circle-notch mr-3 text-white fa-fw"></i>Transaksi
                 </a>
             </div>
         </li>

@@ -6,8 +6,14 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Pesanan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use App\Transaction;
 use App\PesananDetail;
+use App\PesananLunas;
+use App\TransaksiLunas;
 use App\User;
+use Alert;
+use PDF;
 
 class PesananController extends Controller
 {
@@ -17,22 +23,22 @@ class PesananController extends Controller
      * @return \Illuminate\Http\Response
      */
     protected $psn;
+    public $bayar;
     public function index()
     {
         //
-        $this->psn = Pesanan::where('user_id', Auth::user()->id)->where('status', '!=', 0)->get();
+        // $this->psn = Pesanan::where('user_id', Auth::user()->id)->where('status', '!=', 0)->get();
         $user = User::all();
         $pesanan = Pesanan::all();
-        // $pesanan_detail = PesananDetail::all();
         $jumlah_pesanan = PesananDetail::where('status', 0)->count();
         $status = PesananDetail::where('status', 1)->count();
 
-        // $this->psn = Pesanan::where('user_id', Auth::user()->id)->first();
-        // $this->psn_detail = PesananDetail('pesanan_id', $this->psn->id)->get();
-        // $pesanan_modal = PesananDetail::all();
+        // $id_pesanan = $pesanan['id'];
+        // $pesanan_details = PesananDetail::where('pesanan_id', $id_pesanan)->get()->first();
+
         return view('data-admin.data-pesanan.index', [
             'pesanans' => $pesanan,
-            'pesanan' => $this->psn,
+            // 'pesanan_details' => $pesanan_details,
             'user' => $user,
             'jumlah_pesanan' => $jumlah_pesanan,
             'status' => $status,
@@ -44,7 +50,115 @@ class PesananController extends Controller
         return redirect()->back();
     }
 
+    public function transaksi()
+    {
+        return view('data-admin.data-transaksi.index');
+    }
 
+    public function cekTransaksi(Request $request){
+
+
+        if(Gate::allows('admin')){
+
+            $pesanan = Pesanan::where('kode_pemesanan', $request->kode)->get()->first();
+            
+            if($pesanan == false) {
+
+                Alert::warning('Perhatian', 'kode Pemesanan Ini Tidak Ada');
+
+                return back();
+            }else {
+
+                $jumlah = $pesanan->total_harga;
+                // $kode_unik = $pesanan->kode_unik;
+                $pajak = $jumlah * 3/100;
+                $id_pesanan = $pesanan['id'];
+                $detail_transaksi = Transaction::where('pesanan_id', $id_pesanan)->get()->first();
+                $detail_pesanan = PesananDetail::where('pesanan_id', $id_pesanan)->get();
+                $bayar = DB::select('SELECT total_harga(' . $jumlah . ',' . $pajak . ') AS total_harga')[0]->total_harga;
+
+                if ($detail_transaksi->status == 1) {
+
+                    Alert::warning('Perhatian', 'Nomor ID Pesanan Ini Udah dibayar');
+
+                    return back();
+                } else {
+
+                    return view('data-admin.data-transaksi.index', compact('detail_transaksi', 'detail_pesanan', 'pesanan','pajak', 'bayar'));
+                }
+            } 
+
+       }else{
+            return abort(403, 'Anda Tidak Memiliki Hak Akses!');
+       }
+    }
+
+    public function kembalian(Request $request)
+    {
+
+        $kembali = $request->bayar - $request->total_bayar;
+
+        return response()->json($kembali);
+    }
+
+    public function bayar(Request $request, $id){
+       $transaksi = Transaction::find($id);
+       $pesanan_id = Pesanan::where('id', $transaksi->pesanan_id)->get()->first();
+       $data = [
+        'jumlah_bayar' => $request['jumlah_bayar'],
+        'status' => 1
+       ];
+
+       $dataPesanan = [
+           'status' => 2
+       ];
+
+       $transaksi->update($data);
+       $pesanan_id->update($dataPesanan);
+
+       Alert::success('Berhasil', 'Pembayaran Berhasil');
+       return redirect('/dahboard-transaksi');
+    }
+
+    public function pesanan_lunas(){
+        $jumlah = PesananLunas::where('status', 2)->count();
+        $pesanan_lunas = PesananLunas::where('status', 2)->get();
+        // $sementara = PesananLunas::orderBy('status', 2);
+
+        // $total_penghasilan = sum($pesanan_lunas);
+        // $sub_total = $pesanan_lunas['harga'];
+        // $sub_total = $pesanan_lunas['total_harga'];
+        // $sub_total = $sementara->total_harga;
+        // $total_penghasilan = DB::select('SELECT total_penghasilan(' . $jumlah . ',' . $sub_total . ') AS total_penghasilan')[0]->total_penghasilan;
+        return view('data-admin.data-recap.pesanan', compact('pesanan_lunas'));
+    }
+
+    public function cek_laporan(Request $request){
+        if(Gate::allows('admin')){
+            $cari = PesananLunas::where('status', 2)->where('updated_at', $request->tanggal)->get();
+            $pesanan_lunas = PesananLunas::where('status', 2)->get();
+
+            $tanggal = $request->tanggal;
+            
+            return view('data-admin.data-recap.pesanan', compact('cari', 'pesanan_lunas', 'tanggal'));
+       }else{
+            return abort(403, 'Anda Tidak Memiliki Hak Akses!');
+       }
+
+    }
+
+    public function cetakPesanan(Request $request){
+        $cari = PesananLunas::where('status', 2)->where('updated_at', $request->tanggal)->get();
+        $pesanan_lunas = PesananLunas::where('status', 2)->get();
+
+        $pdf = PDF::loadView('data-admin.data-recap.pesanan_pdf', compact('cari', 'pesanan_lunas'))->setPaper('a4', 'potrait');
+        return $pdf->stream();
+    }
+
+    public function transaksi_lunas(){
+        
+    }
+    
     /**
      * Show the form for creating a new resource.
      *

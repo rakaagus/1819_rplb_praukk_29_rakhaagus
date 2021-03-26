@@ -52,7 +52,7 @@
                 <!-- Form grup -->
                
                 <div class="form-group">
-                    <label for=""><a href="singup.html" class="alink">Any Account?</a></label>
+                    <label for=""><a href="{{ route('register') }}" class="alink">Any Account?</a></label>
                 </div>
 
             </form>
