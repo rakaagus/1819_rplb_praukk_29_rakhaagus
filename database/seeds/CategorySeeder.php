@@ -17,22 +17,18 @@ class CategorySeeder extends Seeder
         //
         DB::table('categories')->insert([
         	'nama' => 'Appetizer',
-        	'gambar' => 'appetizer.png',
         ]);
 
         DB::table('categories')->insert([
         	'nama' => 'Main Course',
-        	'gambar' => 'maincourse.jfif',
         ]);
 
         DB::table('categories')->insert([
         	'nama' => 'Dessert',
-        	'gambar' => 'dessert.jfif',
         ]);
 
         DB::table('categories')->insert([
         	'nama' => 'Drinks',
-        	'gambar' => 'drinks.jfif',
         ]);
     }
 }

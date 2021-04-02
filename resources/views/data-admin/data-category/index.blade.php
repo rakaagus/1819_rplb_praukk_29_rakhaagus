@@ -56,7 +56,9 @@
                             <td>{{ $ctg->nama }}</td>
                             <td>
                                 <a href="{{ route('category.edit', $ctg->id) }}" class="btn btn-warning btn-md"><i class="fas fa-edit text-white d-inline"></i></a> |
+                                @if (Auth::user()->level_id == 1)
                                 <a href="{{ route('category.delete', $ctg->id) }}" class="btn btn-danger btn-md" ><i class="fas fa-trash text-white"></i></a>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

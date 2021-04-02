@@ -57,19 +57,19 @@ Route::get('/dashboard-user/{id}/delete', 'UserController@destroy')->name('dashb
 
 
 //log controller
-Route::get('/category-log', 'LogController@logCategory')->name('category-log');
-Route::get('/product-log', 'LogController@logProduct')->name('product-log');
-Route::get('/user-log', 'LogController@logUser')->name('user-log');
+Route::get('/log', 'LogController@index')->name('log');
 
 //route pesanan
 Route::get('/dashboard-pesanan', 'PesananController@index')->name('dashboard-pesanan');
 Route::post('/dashboard-pesanan/{id}', 'PesananController@statusOnchange')->name('statusOnchange');
 Route::get('/dashboard-transaksi', 'PesananController@transaksi')->name('dashboard-transaksi');
 Route::post('/dashboard-transaksi', 'PesananController@cekTransaksi')->name('dashboard-transaksi.check');
+Route::get('/dashboard-transaksi/{id}/lunas', 'PesananController@pdf_transaksi')->name('bayar.pdf');
 Route::get('/kembalian', 'PesananController@kembalian')->name('kembalian');
 Route::post('/bayar/transaksi/{id}', 'PesananController@bayar')->name('bayar.transaksi');
 
 //route recap dan laporan
 Route::get('/recap/pesanan', 'PesananController@pesanan_lunas')->name('recap-pesanan');
 Route::post('/recap/pesanan', 'PesananController@cek_laporan')->name('cek_laporan');
-Route::post('/recap/pesanan/cetak', 'PesananController@cetakPesanan')->name('cetak-pesanan'); 
+Route::post('/recap/pesanan/cetak', 'PesananController@cetakPesanan')->name('cetak-pesanan');
+Route::get('/recap/transaksi', 'PesananController@transaksi_lunas')->name('recap-transaksi'); 

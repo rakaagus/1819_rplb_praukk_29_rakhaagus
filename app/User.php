@@ -57,4 +57,10 @@ class User extends Authenticatable
         return $this->hasOne(PesananLunas::class);
 
     }
+
+    public function activitylog(){
+
+        return $this->hasMany(Activitylog::class);
+
+    }
 }

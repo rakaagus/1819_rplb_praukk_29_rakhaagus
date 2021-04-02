@@ -7,6 +7,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\CategoryImport;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 Use Alert;
 
 class CategoryController extends Controller
@@ -16,9 +17,20 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         //
+        if (Gate::allows('pelanggan')) {
+            return abort(403,'Anda Tidak Memiliki Hak Akses!');
+        }elseif(Gate::allows('waiter')) {
+            return abort(403,'Anda Tidak Memiliki Hak Akses!');
+        }
+
         $category = Category::paginate(10)->all();
         return view('data-admin.data-category.index', compact('category'));
     }
@@ -42,12 +54,17 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
+
+        if (Gate::allows('pelanggan')) {
+            return abort(403,'Anda Tidak Memiliki Hak Akses!');
+        }
+        
         $validasi = $request->validate([
             'nama' => 'required|max:150'
         ]);
 
         if($validasi->fails()){
-            Alert::error('Error', 'Masukan Data Dengan Benar');
+            Alert::warning('Gagal', 'Masukan Data Dengan Benar!');
             return back();
         }
 
@@ -58,6 +75,10 @@ class CategoryController extends Controller
     }
 
     public function import(Request $request){
+
+        if (Gate::allows('pelanggan')) {
+            return abort(403,'Anda Tidak Memiliki Hak Akses!');
+        }
 
         $request->validate([
             'excel' => 'required|file'
@@ -89,6 +110,10 @@ class CategoryController extends Controller
     public function edit($id)
     {
         //
+        if (Gate::allows('pelanggan')) {
+            return abort(403,'Anda Tidak Memiliki Hak Akses!');
+        }
+
         $category = Category::find($id);
         return view('data-admin.data-category.edit', compact('category'));
     }
@@ -103,6 +128,10 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         //
+        if (Gate::allows('pelanggan')) {
+            return abort(403,'Anda Tidak Memiliki Hak Akses!');
+        }
+
         $category = Category::find($id);
 
         $validasi = $request->validate([
@@ -128,6 +157,13 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         //
+        if (Gate::allows('pelanggan')) {
+            return abort(403,'Anda Tidak Memiliki Hak Akses!');
+        }elseif(Gate::allows('kasir')){
+            return abort(403,'Anda Tidak Memiliki Hak Akses!');
+        }elseif(Gate::allows('waiter')){
+            return abort(403,'Anda Tidak Memiliki Hak Akses!');
+        }
         $category = Category::find($id);
         $category->delete();
         return redirect('/category')->with('success', 'Data Berhasil Dihapus');

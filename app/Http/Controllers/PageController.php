@@ -21,9 +21,17 @@ class PageController extends Controller
         //
         if(Gate::allows('admin')){
             return view('data-admin.index');
+
         } elseif(Gate::allows('pelanggan')){
             return redirect('/');
-        } else{
+
+        }elseif(Gate::allows('waiter')){
+            return view('data-admin.index');
+
+        }elseif(Gate::allows('kasir')){
+            return view('data-admin.index');
+
+        }else{
             return abort(404);
         }
         

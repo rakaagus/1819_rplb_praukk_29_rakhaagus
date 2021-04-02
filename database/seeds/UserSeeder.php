@@ -15,21 +15,21 @@ class UserSeeder extends Seeder
         //
         DB::table('users')->insert([
         	'level_id' => 1,
-            'name' => 'admin',
+            'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => Hash::make('admin'),
         ]);
         DB::table('users')->insert([
         	'level_id' => 2,
             'name' => 'Kasir',
-            'email' => 'Kasir@gmail.com',
+            'email' => 'kasir@gmail.com',
             'password' => Hash::make('kasir'),
         ]);
         DB::table('users')->insert([
         	'level_id' => 3,
             'name' => 'Waiter',
             'email' => 'Waiter@gmail.com',
-            'password' => Hash::make('admin'),
+            'password' => Hash::make('waiter'),
         ]);
         DB::table('users')->insert([
         	'level_id' => 4,

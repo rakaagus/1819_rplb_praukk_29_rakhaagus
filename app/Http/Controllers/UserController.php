@@ -15,6 +15,12 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         //
@@ -51,6 +57,7 @@ class UserController extends Controller
             ]);
 
         if($this->validasi->fails()){
+            Alert::warning('Gagal', 'Masukan Data Dengan Benar!');
             return back();
         }
 
@@ -62,6 +69,7 @@ class UserController extends Controller
         $user->remember_token = Str::random(40);
         $user->save();
 
+        Alert::success('Berhasil', 'Tambah Data Berhasil!');
         return redirect('/dashboard-user');
     }
 
@@ -99,6 +107,17 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validator = $request->validate([
+            'name' => 'required|max:150',
+            'email' => 'required|email',
+            'role' => 'required'
+        ]);
+
+        if($this->validasi->fails()){
+            Alert::warning('Gagal', 'Masukan Data Dengan Benar!');
+            return back();
+        }
+        
         $user = User::find($id);
         
         if(!empty($request->password)){
@@ -121,6 +140,7 @@ class UserController extends Controller
 
         $user->update($data);
 
+        Alert::success('Berhasil', 'Update Data Berhasil!');
         return redirect('/dashboard-user');
 
     }
@@ -136,6 +156,7 @@ class UserController extends Controller
         //
         $user = User::find($id);
         $user->delete();
+        Alert::success('Berhasil', 'Hapus Data Berhasil');
         return redirect('/dashboard-user');
     }
 }

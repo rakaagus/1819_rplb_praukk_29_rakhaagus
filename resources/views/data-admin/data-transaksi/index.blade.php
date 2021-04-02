@@ -159,7 +159,7 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-2 col-form-label">Total : </label>
                     <div class="col-5 pr-0">
-                        <input type="text" class="form-control" name="total_harga" readonly value="{{ $bayar }}" id="total">
+                        <input type="text" class="form-control" name="total_bayar" readonly value="{{ $bayar }}" id="total">
                     </div>
                 </div>
 
@@ -173,11 +173,11 @@
                 <div class="form-group row">
                     <label for="" class="col-sm-2 col-form-label">Kembalian : </label>
                     <div class="col-5 pr-0">
-                        <input type="text" class="form-control" id="kembalian" readonly>
+                        <input type="text" class="form-control" id="kembalian" readonly name="kembalian">
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Bayar</button>
+                <button type="submit" class="btn btn-primary" name="bayar">Bayar</button>
             </form>
         </div>
     </div>

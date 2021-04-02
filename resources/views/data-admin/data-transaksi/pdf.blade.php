@@ -1,20 +1,52 @@
-@extends('data-admin.layouts.app')
-
-@section('title','Data Pesanan | Pizzify')
-
-@section('content')
-
-<div class="container-fluid mb-5" style="min-height: 82.5vh;">
-    <h3 class=" py-3"><i class="fas fa-cookie mr-2 pt-4 pb-2" style="size: 2px"></i>Pesanan</h3>
-
-    @if (isset($_POST['bayar']))
-    <div class="card mb-3 {{ !isset($_POST['bayar']) ? 'd-none' : '' }} pt-2 shadow">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{public_path('css/app.css')}}">
+    <title>Detail Pembayaran</title>
+    <style>
+        .styled-table {
+            border-collapse: collapse;
+            margin: 25px 0;
+            font-size: 0.9em;
+            font-family: sans-serif;
+            min-width: 400px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        }
+        .styled-table thead tr {
+            background-color:#00FFFF;
+            color: #050505;
+            width: 4px;
+            text-align: left;
+        }
+        .styled-table th,
+        .styled-table td {
+            padding: 12px 15px;
+        }
+        .styled-table tbody tr {
+        border-bottom: 1px solid #dddddd;
+        }
+        .styled-table tbody tr:nth-of-type(even) {
+            background-color: #f3f3f3;
+        }
+        .styled-table tbody tr:last-of-type {
+            border-bottom: 2px solid#00FFFF;
+        }
+        .styled-table tbody tr.active-row {
+            font-weight: bold;
+            color:#00FFFF;
+        }
+        .text-center {
+            text-align: center !important;
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <h1 class="text-center">Detail Pembayaran: {{Carbon\Carbon::now()}}</h1>
+    <div class="card mb-3 pt-2 shadow">
         <div class="card-header bg-white">
-            <div class="row">
-                <div class="col">
-                    <span style="font-size: 18px;">Detail Pemesan</span>
-                </div>
-            </div>
         </div>
         <div class="card-body">
             <div class="row">
@@ -46,13 +78,10 @@
         </div>
     </div>
 
-    <div class="card {{ !isset($_POST['bayar']) ? 'd-none' : '' }} mb-3 shadow">
+    <h1 class="text-center">Detail Pesanan</h1>
+    <div class="card mb-3 shadow">
         <div class="card-header bg-white">
-            <div class="row">
-                <div class="col">
-                    <span style="font-size: 18px;">Detail Transaksi</span>
-                </div>
-            </div>
+            
         </div>
         <div class="card-body">
             <table class="table table-bordered table-striped" id="datatables" style="width: 100%;">
@@ -72,7 +101,7 @@
                         <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>
-                                <img src="{{ url('assets/img/product/'.$dtl->product->gambar) }}" alt="" class="img-fluid gambar-product" width="80px">
+                                <img src="{{public_path('assets/img/product').'/'.$dtl->product->gambar}}" width="100">
                             </td>
                             <td>{{ $dtl->product->nama }}</td>
                             <td>
@@ -107,16 +136,9 @@
                             <td colspan="7" align="right"><strong>Kembalian : Rp.{{ number_format($transaksi->kembalian) }}</strong></td>
                         @endif
                     </tr>
-                    <tr>
-                        <td colspan="7" align="right">
-                            <a href="{{ route('bayar.pdf', $transaksi->id) }}" class="btn btn-info" target="_blank">Print</a>
-                        </td>
-                    </tr>
                     <tfoot></tfoot>
                 </table>
             </div>
         </div>
-    @endif
-@include('sweetalert::alert')
-
-@endsection
+</body>
+</html>

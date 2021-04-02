@@ -71,6 +71,7 @@
 
 
         {{-- order-link --}}
+        @if (Auth::user()->level_id == 1)
         <li class="nav-item">
             <div class="px-2 pb-1">
                 <a href="{{ route('category') }}" class="nav-link text-white rounded">
@@ -78,6 +79,7 @@
                 </a>
             </div>
         </li>
+        @endif
         <br>
         {{-- end order-link --}}
 
