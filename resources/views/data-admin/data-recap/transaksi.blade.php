@@ -1,4 +1,4 @@
-@extends('data-admin.layouts.app')
+@extends('../layouts/app')
 
 @section('title','Data Recap | Pizzify')
 
@@ -88,7 +88,7 @@
                         @foreach ($transaksi_lunas as $lunas)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $lunas->user->name }}</td>
+                                <td>{{ $lunas->user_id}}</td>
                                 <td>{{ $lunas->kode_pemesanan }}</td>
                                 <td>{{ $lunas->kode_unik }}</td>
                                 <td>{{ $lunas->nomeja }}</td>

@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use App\User;
+use App\Product;
+use App\PesananDetail;
+use App\Transaction;
+
 
 class PageController extends Controller
 {
@@ -19,17 +24,22 @@ class PageController extends Controller
     public function index()
     {
         //
+        $user = User::all()->count();
+        $product = Product::all()->count();
+        $pesananDetail = PesananDetail::where('status', 0)->count();
+        $transaksi = Transaction::where('status', 0)->count();
+
         if(Gate::allows('admin')){
-            return view('data-admin.index');
+            return view('data-admin.index', compact('user', 'product', 'pesananDetail', 'transaksi'));
 
         } elseif(Gate::allows('pelanggan')){
             return redirect('/');
 
         }elseif(Gate::allows('waiter')){
-            return view('data-admin.index');
+            return view('waiter-kasir.index', compact('user', 'product', 'pesananDetail', 'transaksi'));
 
         }elseif(Gate::allows('kasir')){
-            return view('data-admin.index');
+            return view('waiter-kasir.index',compact('user', 'product', 'pesananDetail', 'transaksi'));
 
         }else{
             return abort(404);

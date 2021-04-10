@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Pesanan;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Transaction;
+use App\Activitylog;
 use App\PesananDetail;
 use App\PesananLunas;
 use App\TransaksiLunas;
@@ -46,7 +48,7 @@ class PesananController extends Controller
         // $id_pesanan = $pesanan['id'];
         // $pesanan_details = PesananDetail::where('pesanan_id', $id_pesanan)->get()->first();
 
-        return view('data-admin.data-pesanan.index', [
+        return view('waiter-kasir.data-pesanan.index', [
             'pesanans' => $pesanan,
             // 'pesanan_details' => $pesanan_details,
             'user' => $user,
@@ -57,17 +59,28 @@ class PesananController extends Controller
     public function statusOnchange(Request $request, $id)
     {
         if (Gate::allows('pelanggan')) {
+
             return abort(403,'Anda Tidak Memiliki Hak Akses!');
+
+        } elseif(Gate::allows('owner')){
+
+            return abort(403,'Anda Tidak Memiliki Hak Akses!');
+
+        } else{
+
+            DB::select("CALL update_status_pesanan_detail($id, '$request->status')");
+            Alert::success('Berhasil', 'Berhasil Ubah Data Pesanan');
+            return redirect()->back();
+
         }
 
-        DB::select("CALL update_status_pesanan_detail($id, '$request->status')");
-        Alert::success('Berhasil', 'Berhasil Ubah Data Pesanan');
-        return redirect()->back();
+        
     }
 
     public function transaksi()
     {
-        return view('data-admin.data-transaksi.index');
+        $pesanan = Pesanan::where('status', 1)->get();
+        return view('waiter-kasir.data-transaksi.index', compact('pesanan'));
     }
 
     public function cekTransaksi(Request $request){
@@ -101,7 +114,7 @@ class PesananController extends Controller
                     return back();
                 } else {
 
-                    return view('data-admin.data-transaksi.index', compact('detail_transaksi', 'detail_pesanan', 'pesanan','pajak', 'bayar'));
+                    return view('waiter-kasir.data-transaksi.index', compact('detail_transaksi', 'detail_pesanan', 'pesanan','pajak', 'bayar'));
                 }
             } 
     }
@@ -119,30 +132,60 @@ class PesananController extends Controller
         if (Gate::allows('pelanggan')) {
             return abort(403,'Anda Tidak Memiliki Hak Akses!');
         }
+        DB::beginTransaction();
 
-       $transaksi = Transaction::find($id);
-       $pesanan_id = Pesanan::where('id', $transaksi->pesanan_id)->get()->first();
-       $id_pesanan = $pesanan_id['id'];
-       $details = PesananDetail::where('pesanan_id', $id_pesanan)->get();
+        $transaksi = Transaction::find($id);
+        $pesanan_id = Pesanan::where('id', $transaksi->pesanan_id)->get()->first();
+        $id_pesanan = $pesanan_id['id'];
+        $details = PesananDetail::where('pesanan_id', $id_pesanan)->get();
+        
+        $jumlah = $pesanan_id->total_harga;
+        $pajak = $jumlah + 3/100;
+        $data = [
+            'total_bayar' => $request['total_bayar'],
+            'jumlah_bayar' => $request['jumlah_bayar'],
+            'kembalian' => $request['kembalian'],
+            'status' => 1
+        ];
 
-       $jumlah = $pesanan_id->total_harga;
-       $pajak = $jumlah + 3/100;
-       $data = [
-        'total_bayar' => $request['total_bayar'],
-        'jumlah_bayar' => $request['jumlah_bayar'],
-        'kembalian' => $request['kembalian'],
-        'status' => 1
-       ];
+        $dataPesanan = [
+            'status' => 2
+        ];
 
-       $dataPesanan = [
-           'status' => 2
-       ];
+        try {
+            $transaksi->update($data);
+            $pesanan_id->update($dataPesanan);
 
-       $transaksi->update($data);
-       $pesanan_id->update($dataPesanan);
+            Activitylog::create([
+                'nama_log'  => 'BAYAR',
+                'deskripsi' => 'Membayar Transaksi Pesanan',
+                'tabel' => 'Transaksi dan Pesanan',
+                'referensi_id' => $transaksi->id,
+                'user_id' => $transaksi->user_id,
+                'new_item' => '-',
+                'old_item' => '-'
+            ]);
 
-       Alert::success('Berhasil', 'Berhasil Melakukan Pembayaran');
-       return view('data-admin.data-transaksi.lunas', compact('transaksi', 'pesanan_id', 'details', 'pajak'));
+            DB::commit();
+        } catch (Exception $e){
+            DB::rollBack();
+        }
+
+        if($request->jumlah_bayar < $request->total_bayar){
+            DB::rollBack();
+            Alert::error('Gagal', 'Masukan Jumlah Uang Dengan Benar');
+            return back();
+        }
+
+        if (empty($e)) {
+
+            Alert::success('Berhasil', 'Berhasil Melakukan Pembayaran');
+            return view('waiter-kasir.data-transaksi.lunas', compact('transaksi', 'pesanan_id', 'details', 'pajak'));
+        } else {
+
+            Alert::warning('Gagal', 'Gagal Melakukan Pembayaran');
+            return view('waiter-kasir.data-transaksi.index');
+        }
     }
     
     public function pdf_transaksi($id){
@@ -158,7 +201,7 @@ class PesananController extends Controller
         $jumlah = $pesanan_id->total_harga;
         $pajak = $jumlah + 3/100;
 
-        $pdf = PDF::loadView('data-admin.data-transaksi.pdf', compact('transaksi', 'pesanan_id', 'details', 'pajak'))->setPaper('a4', 'potrait');
+        $pdf = PDF::loadView('waiter-kasir.data-transaksi.pdf', compact('transaksi', 'pesanan_id', 'details', 'pajak'))->setPaper('a4', 'potrait');
         return $pdf->stream();
     }
 

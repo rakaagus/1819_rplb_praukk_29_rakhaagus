@@ -1,4 +1,4 @@
-@extends('data-admin.layouts.app')
+@extends('../layouts/app')
 
 @section('title','Data Users | Pizzify')
 

@@ -25,14 +25,12 @@ class CategoryController extends Controller
     public function index()
     {
         //
-        if (Gate::allows('pelanggan')) {
-            return abort(403,'Anda Tidak Memiliki Hak Akses!');
-        }elseif(Gate::allows('waiter')) {
+        if (Gate::allows('admin')) {
+            $category = Category::paginate(10)->all();
+            return view('data-admin.data-category.index', compact('category'));
+        }else{
             return abort(403,'Anda Tidak Memiliki Hak Akses!');
         }
-
-        $category = Category::paginate(10)->all();
-        return view('data-admin.data-category.index', compact('category'));
     }
 
     /**
@@ -55,39 +53,45 @@ class CategoryController extends Controller
     {
         //
 
-        if (Gate::allows('pelanggan')) {
+        if (Gate::allows('admin')) {
+            $data = [
+                'nama'       => $request->nama,
+            ];
+    
+            $rules = [
+                'nama'    => ['required'],
+            ];
+    
+            $messages = [
+                'nama.required'     => 'Nama Category wajib diisi',
+            ];
+    
+            $validator =  Validator::make($data, $rules, $messages);
+            $validator->validate();
+    
+            $category = Category::create($data);
+    
+            Alert::success('Berhasil', 'Tambah Data Berhasil');
+            return redirect('/category');
+        }else{
             return abort(403,'Anda Tidak Memiliki Hak Akses!');
         }
         
-        $validasi = $request->validate([
-            'nama' => 'required|max:150'
-        ]);
-
-        if($validasi->fails()){
-            Alert::warning('Gagal', 'Masukan Data Dengan Benar!');
-            return back();
-        }
-
-        $category = Category::create($request->all());
-
-        Alert::success('Berhasil', 'Tambah Data Berhasil');
-        return redirect('/category');
     }
 
     public function import(Request $request){
 
-        if (Gate::allows('pelanggan')) {
+        if (Gate::allows('admin')) {
+            $request->validate([
+                'excel' => 'required|file'
+            ]);
+    
+            Excel::import(new CategoryImport, $request->file('excel'));
+    
+            return redirect('/category');
+        }else{
             return abort(403,'Anda Tidak Memiliki Hak Akses!');
         }
-
-        $request->validate([
-            'excel' => 'required|file'
-        ]);
-
-        Excel::import(new CategoryImport, $request->file('excel'));
-
-        return redirect('/category');
-
     }
 
     /**
@@ -110,12 +114,12 @@ class CategoryController extends Controller
     public function edit($id)
     {
         //
-        if (Gate::allows('pelanggan')) {
+        if (Gate::allows('admin')) {
+            $category = Category::find($id);
+            return view('data-admin.data-category.edit', compact('category'));
+        }else{
             return abort(403,'Anda Tidak Memiliki Hak Akses!');
         }
-
-        $category = Category::find($id);
-        return view('data-admin.data-category.edit', compact('category'));
     }
 
     /**
@@ -128,24 +132,30 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         //
-        if (Gate::allows('pelanggan')) {
+        if (Gate::allows('admin')) {
+            $category = Category::find($id);
+
+            $data = [
+                'nama'       => $request->nama,
+            ];
+    
+            $rules = [
+                'nama'    => ['required'],
+            ];
+    
+            $messages = [
+                'nama.required'     => 'Nama Category wajib diisi',
+            ];
+    
+            $validator = Validator::make($data, $rules, $messages);
+            $validator->validate();
+    
+            $category->update($data);
+            Alert::success('Berhasil', 'Edit Data Berhasil');
+            return redirect('/category');
+        } else{
             return abort(403,'Anda Tidak Memiliki Hak Akses!');
         }
-
-        $category = Category::find($id);
-
-        $validasi = $request->validate([
-            'nama' => 'required|max:150'
-        ]);
-
-        if($validasi->fails()){
-            Alert::error('Error', 'Masukan Data Dengan Benar');
-            return back();
-        }
-
-        $category->update($request->all());
-        Alert::success('Berhasil', 'Edit Data Berhasil');
-        return redirect('/category');
     }
 
     /**
@@ -157,15 +167,12 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         //
-        if (Gate::allows('pelanggan')) {
-            return abort(403,'Anda Tidak Memiliki Hak Akses!');
-        }elseif(Gate::allows('kasir')){
-            return abort(403,'Anda Tidak Memiliki Hak Akses!');
-        }elseif(Gate::allows('waiter')){
+        if (Gate::allows('admin')) {
+            $category = Category::find($id);
+            $category->delete();
+            return redirect('/category')->with('success', 'Data Berhasil Dihapus');
+        }else{
             return abort(403,'Anda Tidak Memiliki Hak Akses!');
         }
-        $category = Category::find($id);
-        $category->delete();
-        return redirect('/category')->with('success', 'Data Berhasil Dihapus');
     }
 }

@@ -1,10 +1,10 @@
-@extends('data-admin.layouts.app')
+@extends('../layouts/app')
 
 @section('title','Data Category | Pizzify')
 
 @section('content')
 
-<div class="container mb-5" style="min-height: 82.5vh;">
+<div class="container-fluid mb-5" style="min-height: 82.5vh;">
     <div class="row">
       <div class="col-md-3">
         <h3 class=" py-3"><i class="fas fa-th-list mr-2 pt-4 pb-2" style="size: 2px"></i>Category</h3>
