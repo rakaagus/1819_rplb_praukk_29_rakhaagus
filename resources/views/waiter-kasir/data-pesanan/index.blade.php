@@ -40,7 +40,10 @@
                             <th>Jumlah Pesanan</th>
                             <th>Harga</th>
                             <th>Sub Harga</th>
+                            @if (Auth::user()->level_id == 4)
+                            @else
                             <th>Aksi</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -68,7 +71,9 @@
                             <td>{{ $psnDetail->jumlah_pesanan }}</td>
                             <td>{{ $psnDetail->product->harga }}</td>
                             <td>{{ $psnDetail->total_harga }}</td>
-                            <td>
+                            @if (Auth::user()->level_id == 4)
+                            @else
+                            <td>  
                                 <form action="{{route('statusOnchange', $psnDetail->id)}}" method="post">
                                     @csrf
                                     {{-- <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#edit">Edit</button> --}}
@@ -79,6 +84,7 @@
                                       </select>
                                 </form>
                             </td>
+                            @endif
                         </tr>
                         @endforeach
                         <tr>

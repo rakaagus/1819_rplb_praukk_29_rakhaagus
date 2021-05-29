@@ -40,7 +40,8 @@ class PageController extends Controller
 
         }elseif(Gate::allows('kasir')){
             return view('waiter-kasir.index',compact('user', 'product', 'pesananDetail', 'transaksi'));
-
+        }elseif(Gate::allows('owner')){
+            return view('data-owner.index',compact('user', 'product', 'pesananDetail', 'transaksi'));
         }else{
             return abort(404);
         }

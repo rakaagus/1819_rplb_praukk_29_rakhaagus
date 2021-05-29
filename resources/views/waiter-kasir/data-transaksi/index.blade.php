@@ -19,7 +19,8 @@
             </nav>
         </div>
       </div>
-
+    @if (Auth::user()->level_id == 4)
+    @else
     <div class="card shadow mb-3">
         <div class="card-header bg-white">
             <div class="row">
@@ -43,6 +44,7 @@
             </form>
         </div>
     </div>
+    @endif
 
     @if (!isset($_POST['cari']))
     <div class="card {{ isset($_POST['cari']) ? 'd-none' : '' }} mb-3 shadow">
@@ -64,7 +66,10 @@
                         <th>total_harga</th>
                         <th>Nomor Meja</th>
                         <th>Status Product</th>
+                        @if (Auth::user()->level_id == 4)
+                        @else
                         <th>Aksi</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -79,6 +84,8 @@
                             <?php $jumlah = \App\PesananDetail::where('pesanan_id', $psn->id)->count(); ?>
                             <?php $status = \App\PesananDetail::where('pesanan_id', $psn->id)->where('status', 1)->count(); ?>
                             <td>{{ $status }} / {{ $jumlah }}</td>
+                            @if (Auth::user()->level_id == 4)
+                            @else
                             <td>
                                 <form action="{{ route('dashboard-transaksi.check') }}" method="POST">
                                     @csrf
@@ -86,6 +93,7 @@
                                     <button class="btn btn-primary" name="cari">bayar</button>
                                 </form>
                             </td>
+                            @endif
                         </tr>
                    @endforeach
                     </tbody>
